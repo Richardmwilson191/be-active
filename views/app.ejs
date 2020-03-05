@@ -1,0 +1,52 @@
+
+<head>
+  <title>Be Active</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:100,300,400"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+
+<body>
+  <div class="flex-con tainer">
+    <div class="container">
+      <h1>BE ACTIVE</h1>
+      <p class="lead">
+        Enter your email to join
+        <strong><%= app_data[app_data.length - 1].total %></strong> others on
+        this fitness journey.
+      </p>
+      <form method="POST" action="/register">
+        <fieldset>
+          <div>
+            <input
+              type="text"
+              name="email"
+              class="form"
+              placeholder="Enter Your Email"
+            />
+          </div>
+          <div class="column is-half container">
+            <% for(let i=0; i < (app_data.length - 1); i++) { %>
+            <span class="boxes">
+              <input
+                type="checkbox"
+                name="training"
+                value="<%= app_data[i].id %>"
+              ><span class="interests"> <%= app_data[i].interest_name.charAt(0).toUpperCase() + app_data[i].interest_name.substring(1) %></span></input>
+            </span>
+            <% } %>
+          </div>
+          <div>
+            <button id="join">Join Now</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</body>
