@@ -1,4 +1,4 @@
-use join-us-fit;
+use join_us;
 
 create table
 if not exists users
