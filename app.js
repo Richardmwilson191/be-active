@@ -1,4 +1,4 @@
-const alert = require('alert-node');
+// const alert = require('alert-node');
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
@@ -49,7 +49,7 @@ app.post('/register', function(req, res) {
     if (err) throw err;
 
     if (result[0].total == 1) {
-      alert('This email has already been used.');
+      // alert('This email has already been used.');
       res.redirect('/');
     } else {
       connection.query('INSERT INTO users SET ?', person, function(
@@ -82,6 +82,7 @@ app.post('/register', function(req, res) {
   });
 });
 
-app.listen(8080, function() {
-  console.log('App listening on port 8080!');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
 });
