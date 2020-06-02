@@ -1,11 +1,14 @@
 const faker = require('faker');
 const mysql = require('mysql');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'lovedayna100',
-  database: 'join_us'
+  host: process.env.DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_DATABASE,
 });
 
 connection.connect();
@@ -50,7 +53,7 @@ for (var i = 0; i < 500; i++) {
 
 var q = 'INSERT INTO users (email, created_at) VALUES ?';
 
-connection.query(q, [data], function(err, result) {
+connection.query(q, [data], function (err, result) {
   console.log(err);
   console.log(result);
 });
