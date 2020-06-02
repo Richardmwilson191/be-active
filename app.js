@@ -3,56 +3,59 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
-const db = require('./db.config');
+// const db = require('./db.config');
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 const connection = mysql.createConnection({
-  host: db.HOST,
-  user: db.USER,
-  password: db.PASSWORD,
-  database: db.DATABASE
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 connection.connect();
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   let app_data = [];
   let get_interests_query = 'select * from interests';
 
-  connection.query(get_interests_query, function(error, results, fields) {
+  connection.query(get_interests_query, function (error, results, fields) {
     if (error) throw error;
     app_data = results;
   });
 
   let number_of_users_query = 'select count(*) as total from users';
 
-  connection.query(number_of_users_query, function(error, results, fields) {
+  connection.query(number_of_users_query, function (error, results, fields) {
     if (error) throw error;
     app_data.push(results[0]);
     res.render('app', { app_data: app_data });
   });
 });
 
-app.post('/register', function(req, res) {
+app.post('/register', function (req, res) {
   let email = req.body.email;
   let interest_id = req.body.training;
   let person = {
-    email: req.body.email
+    email: req.body.email,
   };
 
   let user_email_q = 'SELECT COUNT(*) as total FROM `users` WHERE `email` = ?';
 
-  connection.query(user_email_q, [email], function(err, result) {
+  connection.query(user_email_q, [email], function (err, result) {
     if (err) throw err;
 
     if (result[0].total == 1) {
       // alert('This email has already been used.');
       res.redirect('/');
     } else {
-      connection.query('INSERT INTO users SET ?', person, function(
+      connection.query('INSERT INTO users SET ?', person, function (
         err,
         result
       ) {
@@ -61,7 +64,7 @@ app.post('/register', function(req, res) {
 
       let user_id_q = 'SELECT `id` FROM `users` WHERE `email` = ?';
 
-      connection.query(user_id_q, [email], function(err, result) {
+      connection.query(user_id_q, [email], function (err, result) {
         if (err) throw err;
 
         // insert into user_interests table
@@ -72,7 +75,7 @@ app.post('/register', function(req, res) {
           }
 
           let q = 'INSERT INTO user_interests (user_id, interest_id) VALUES ?';
-          connection.query(q, [data], function(err, result) {
+          connection.query(q, [data], function (err, result) {
             if (err) throw err;
           });
         }
