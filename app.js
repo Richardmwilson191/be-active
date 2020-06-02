@@ -3,7 +3,6 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
-// const db = require('./db.config');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -19,7 +18,14 @@ const connection = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 
-connection.connect();
+connection.connect(function (err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+
+  console.log('connected as id ' + connection.threadId);
+});
 
 app.get('/', function (req, res) {
   let app_data = [];
@@ -84,6 +90,8 @@ app.post('/register', function (req, res) {
     }
   });
 });
+
+connection.end();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
