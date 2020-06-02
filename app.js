@@ -43,6 +43,8 @@ app.get('/', function (req, res) {
     app_data.push(results[0]);
     res.render('app', { app_data: app_data });
   });
+
+  connection.end();
 });
 
 app.post('/register', function (req, res) {
@@ -90,8 +92,6 @@ app.post('/register', function (req, res) {
     }
   });
 });
-
-connection.end();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
