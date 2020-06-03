@@ -44,7 +44,14 @@ app.get('/', function (req, res) {
     res.render('app', { app_data: app_data });
   });
 
-  connection.end();
+  connection.end(function (err) {
+    if (err) {
+      console.error('error ending connection: ' + err.stack);
+      return;
+    }
+
+    console.log('Connection ended!');
+  });
 });
 
 app.post('/register', function (req, res) {
