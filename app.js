@@ -42,15 +42,15 @@ app.get('/', function (req, res) {
       app_data.push(results[0]);
       res.render('app', { app_data: app_data });
     });
-  });
 
-  connection.end(function (err) {
-    if (err) {
-      console.error('error ending connection: ' + err.stack);
-      return;
-    }
+    connection.end(function (err) {
+      if (err) {
+        console.error('error ending connection: ' + err.stack);
+        return;
+      }
 
-    console.log('Connection ended!');
+      console.log('Connection ended!');
+    });
   });
 });
 
