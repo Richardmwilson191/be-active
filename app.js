@@ -26,22 +26,22 @@ app.get('/', function (req, res) {
     }
 
     console.log('connected as id ' + connection.threadId);
-  });
 
-  let app_data = [];
-  let get_interests_query = 'select * from interests';
+    let app_data = [];
+    let get_interests_query = 'select * from interests';
 
-  connection.query(get_interests_query, function (error, results, fields) {
-    if (error) throw error;
-    app_data = results;
-  });
+    connection.query(get_interests_query, function (error, results, fields) {
+      if (error) throw error;
+      app_data = results;
+    });
 
-  let number_of_users_query = 'select count(*) as total from users';
+    let number_of_users_query = 'select count(*) as total from users';
 
-  connection.query(number_of_users_query, function (error, results, fields) {
-    if (error) throw error;
-    app_data.push(results[0]);
-    res.render('app', { app_data: app_data });
+    connection.query(number_of_users_query, function (error, results, fields) {
+      if (error) throw error;
+      app_data.push(results[0]);
+      res.render('app', { app_data: app_data });
+    });
   });
 
   connection.end(function (err) {
